@@ -1180,7 +1180,7 @@ def path_to_xmlpath(path):
 
 def create_xml_element(root, name, attrib):
     el = et.SubElement(root, name)
-    for k, v in attrib.iteritems():
+    for k, v in attrib.items():
 
         if isinstance(v, bool):
             el.set(k, str(int(v)))
