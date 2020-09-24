@@ -10,6 +10,7 @@ from astropy.io import fits
 from astropy.coordinates import SkyCoord
 from astropy.table import Table, Column
 from gammapy.maps import WcsNDMap, MapCoord
+from gammapy.maps.utils import coordsys_to_frame
 import fermipy.config
 from fermipy import utils
 from fermipy import defaults
@@ -620,7 +621,7 @@ class SourceFind(object):
         self.free_norm(name, loglevel=logging.DEBUG)
 
         lnlmap = WcsNDMap.create(skydir=skydir, binsz=scan_cdelt, npix=(nstep, nstep),
-                                 coordsys=wcs_utils.get_coordsys(self.geom.wcs))
+                                 frame=coordsys_to_frame(wcs_utils.get_coordsys(self.geom.wcs)))
 
         src = self.roi.copy_source(name)
 
@@ -628,7 +629,7 @@ class SourceFind(object):
             self._create_srcmap_cache(src.name, src)
 
         coord = MapCoord.create(lnlmap.geom.get_coord(flat=True),
-                                coordsys=lnlmap.geom.coordsys)
+                                frame=lnlmap.geom.frame)
         scan_skydir = coord.skycoord.icrs
         for lon, lat, ra, dec in zip(coord.lon, coord.lat,
                                      scan_skydir.ra.deg, scan_skydir.dec.deg):

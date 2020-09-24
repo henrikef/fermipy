@@ -13,6 +13,7 @@ import numpy as np
 from astropy.io import fits
 from astropy.table import Table, Column, vstack
 from gammapy.maps import Map, HpxGeom, WcsGeom, MapAxis, WcsNDMap, HpxNDMap
+from gammapy.maps.utils import coordsys_to_frame
 import fermipy
 import fermipy.defaults as defaults
 import fermipy.utils as utils
@@ -416,14 +417,14 @@ class GTAnalysis(fermipy.config.Configurable, sed.SEDGenerator,
             is_nested = self.config['binning']['hpx_ordering_scheme'] == "NESTED"
             self._geom = HpxGeom.create(2**self.config['binning']['hpx_order'],
                                         nest=is_nested,
-                                        coordsys=self.config['binning']['coordsys'],
+                                        frame=coordsys_to_frame(self.config['binning']['coordsys']),
                                         width=self.config['binning']['roiwidth'],
                                         skydir=self.roi.skydir,
                                         axes=axes)
         else:
 
             self._geom = WcsGeom.create(npix=self.npix, binsz=self._binsz,
-                                        coordsys=self.config['binning']['coordsys'],
+                                        frame=coordsys_to_frame(self.config['binning']['coordsys']),
                                         proj=self.config['binning']['proj'],
                                         skydir=self.roi.skydir,
                                         axes=axes)
@@ -4469,13 +4470,13 @@ class GTBinnedAnalysis(fermipy.config.Configurable):
             is_nested = self.config['binning']['hpx_ordering_scheme'] == "NESTED"
             self._geom = HpxGeom.create(2**self.config['binning']['hpx_order'],
                                         nest=is_nested,
-                                        coordsys=self.config['binning']['coordsys'],
+                                        frame=coordsys_to_frame(self.config['binning']['coordsys']),
                                         width=self.config['binning']['roiwidth'],
                                         skydir=self.roi.skydir,
                                         axes=axes)
         elif self.projtype == "WCS":
             self._geom = WcsGeom.create(npix=self.npix, binsz=self.binsz,
-                                        coordsys=self.config['binning']['coordsys'],
+                                        frame=coordsys_to_frame(self.config['binning']['coordsys']),
                                         proj=self.config['binning']['proj'],
                                         skydir=self.roi.skydir,
                                         axes=axes)
