@@ -939,7 +939,7 @@ class GTAnalysis(fermipy.config.Configurable, sed.SEDGenerator,
 
         cfg['fileio']['workdir'] = self.config['fileio']['workdir']
 
-        for k in cfg.keys():
+        for k in list(cfg.keys()):
             if not k in GTBinnedAnalysis.defaults:
                 cfg.pop(k)
 
