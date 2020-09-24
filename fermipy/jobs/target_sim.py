@@ -17,6 +17,7 @@ import glob
 from astropy import units as u
 from astropy.coordinates import SkyCoord, ICRS, Galactic
 from gammapy.maps import WcsGeom
+from gammapy.maps.utils import coordsys_to_frame
 
 from fermipy.utils import load_yaml, write_yaml, init_matplotlib_backend
 
@@ -174,7 +175,7 @@ class RandomDirGen(Link):
 
         binning = config['binning']
         binsz = binning['binsz']
-        coordsys = binning.get('coordsys', 'GAL')
+        frame = coordsys_to_frame( binning.get('coordsys', 'GAL') )
         roiwidth = binning['roiwidth']
         proj = binning.get('proj', 'AIT')
         ra = config['selection']['ra']
@@ -183,7 +184,7 @@ class RandomDirGen(Link):
         skydir = SkyCoord(ra * u.deg, dec * u.deg)
 
         wcsgeom = WcsGeom.create(npix=npix, binsz=binsz,
-                                 proj=proj, coordsys=coordsys,
+                                 proj=proj, frame=frame,
                                  skydir=skydir)
         return wcsgeom
 
