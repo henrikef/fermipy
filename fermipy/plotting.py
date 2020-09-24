@@ -20,6 +20,7 @@ from scipy.stats import norm
 from scipy.stats import chi2
 from scipy import interpolate
 from gammapy.maps import WcsNDMap, HpxNDMap, MapCoord
+from gammapy.maps.utils import frame_to_coordsys
 
 import fermipy
 import fermipy.config
@@ -316,7 +317,7 @@ class ImagePlotter(object):
             cs.levels = ['%.0f' % val for val in cs.levels]
             plt.clabel(cs, inline=1, fontsize=8)
 
-        coordsys = self._geom.coordsys
+        coordsys = frame_to_coordsys( self._geom.frame )
         if coordsys == 'CEL':
             ax.set_xlabel('RA')
             ax.set_ylabel('DEC')
